@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 /**
  * Created by Eigetsu on 2017/11/13.
@@ -74,14 +75,15 @@ public class AssetManager implements Disposable{
             case "Player": return  txtcharr;
             case "Enemy": return txtcharr;
             case "DefBullet": return txtbulletr;
+            case "Backgroundr": return backgroundr;
             default: return  txtbulletr;
         }
     }
 
-    public void updateBackground(Pixmap map ){
+    public void updateBackground(){
 
-        background = backgroundtmp;
-        //background.draw(backgroundPixMap,0,0);
+        backgroundr = ScreenUtils.getFrameBufferTexture();
+
         Gdx.app.log("debug","Updating Background");
 
     }

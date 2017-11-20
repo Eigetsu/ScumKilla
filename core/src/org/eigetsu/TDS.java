@@ -154,12 +154,19 @@ public class TDS extends ApplicationAdapter implements InputProcessor {
 
 //SPRITE BATCH
 		batch.begin();
-		batch.draw(background, 0, 0,gameScreenX,gameScreenY);
+		batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		batch.draw(assets.getTextureRegionByName("Backgroundr"),0, 0,gameScreenX,gameScreenY);
+		batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
 //DRAW BLOOD
 		drawCountDebug = 0;
 		for(BloodSplat blood : bloodDecals){
 			blood.update(dt,batch);
+		}
+		if (bloodDecals.size > 20) {
+			assets.updateBackground();
+			bloodDecals.clear();
+
 		}
 		//Gdx.app.log("debug",Integer.toString(drawCountDebug));
 		//scrn = ScreenUtils.getFrameBufferPixmap(0, 0, (int)gameScreenX, (int)gameScreenY);
@@ -226,12 +233,13 @@ public class TDS extends ApplicationAdapter implements InputProcessor {
 		if (player1.getHealth() <= 0){
 			batch.draw(maketa, 0f, 0f,gameScreenX,gameScreenY);
 			enemies.clear();
+			bloodDecals.clear();
 		}
 
 		//font.draw(batch, "..." + getMousePosInGameWorld().toString(), getMousePosInGameWorld().x, getMousePosInGameWorld().y);
-		font.draw(batch, Integer.toString(Gdx.graphics.getFramesPerSecond()), 10, 710);
+		//font.draw(batch, Integer.toString(Gdx.graphics.getFramesPerSecond()), 10, 710);
 		//font.draw(batch, "Enemies:" + enemies.size + "  Bullets:" + bullets.size + "  Blood:" + bloodDecals.size + "  JavaHeap:" + Gdx.app.getJavaHeap() + "  Heap:" + Gdx.app.getNativeHeap(), 40, 710);
-		font.draw(batch, "Health:" + player1.getHealth() + "   Level:" + level, 200f, 710f);
+		//font.draw(batch, "Health:" + player1.getHealth() + "   Level:" + level, 200f, 710f);
 		batch.end();
 
 //LEVEL UP
