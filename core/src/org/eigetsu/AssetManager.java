@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 /**
  * Created by Eigetsu on 2017/11/13.
+ * TODO: Texture Atlas
+ * TODO: Pooling
  */
 
 public class AssetManager implements Disposable{
@@ -43,7 +45,7 @@ public class AssetManager implements Disposable{
         txtbullet = new Texture("bullet.png");
         txtbulletr = new TextureRegion(txtbullet);
 
-        background = new Texture("bckg2.png");
+        background = new Texture("bckg2.jpg");
         backgroundr = new TextureRegion(background);
 
 

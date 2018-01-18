@@ -17,7 +17,6 @@ class Enemy {
     Rectangle rec;
 
     private TextureRegion txtcharr;
-    private Texture txtpoint = new Texture("point.png");
 
     private float ENEMY_WIDTH = 32;
     private float ENEMY_HEIGHT = 32;
@@ -29,18 +28,8 @@ class Enemy {
 
     private TDS game;
 
-    BitmapFont mark = new BitmapFont();
 
 
-    public Enemy(TDS game, Vector2 pos){
-        this.pos = new Vector2(pos.cpy());
-        rec = new Rectangle(pos.x, pos.y, ENEMY_WIDTH /2, ENEMY_HEIGHT /2);
-        rotation = 0f;
-        this.game = game;
-        txtcharr = game.assets.getTextureRegionByName("Enemy");
-        health = 100;
-
-    }
 
     public Enemy(TDS game, float x, float y){
         this.pos = new Vector2(x,y);
@@ -64,18 +53,6 @@ class Enemy {
         batch.draw(txtcharr, pos.x- ENEMY_WIDTH /2, pos.y- ENEMY_HEIGHT /2, ENEMY_WIDTH /2, ENEMY_HEIGHT /2, ENEMY_WIDTH, ENEMY_HEIGHT,1,1,rotation);
         pos.add((float) Math.cos(Math.toRadians(rotation))*20f*dt*(1f+game.level*0.05f),(float) Math.sin(Math.toRadians(rotation))*20f*dt*(1f+game.level*0.05f));
 
-
-
-        if (debugRecPos) {
-            batch.draw(txtpoint, rec.x, rec.y, 3, 3);
-            batch.draw(txtpoint, rec.x + rec.width, rec.y, 3, 3);
-            batch.draw(txtpoint, rec.x, rec.y+rec.height, 3, 3);
-            batch.draw(txtpoint, rec.x + rec.width, rec.y + rec.height, 3, 3);
-        }
-        /*mark.draw(batch, ".",rec.x,rec.y);
-        mark.draw(batch, ".",rec.x+ENEMY_WIDTH/2,rec.y);
-        mark.draw(batch, ".",rec.x,rec.y+ENEMY_HEIGHT/2);
-        mark.draw(batch, ".",rec.x+ENEMY_WIDTH/2,rec.y+ENEMY_HEIGHT/2);*/
     }
     public void recieveDamage(int damage){
         health -= damage;

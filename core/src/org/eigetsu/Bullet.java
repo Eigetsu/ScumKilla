@@ -28,7 +28,7 @@ class Bullet {
 
     private TDS game;
 
-    Bullet(TDS game, Vector2 playerPos){
+    public Bullet(TDS game, Vector2 playerPos){
         pos = new Vector2(playerPos.cpy());
         rotation = game.player1.getRotation();
         directionX = (float) Math.cos(Math.toRadians(rotation));

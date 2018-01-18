@@ -14,7 +14,7 @@ public class MachineGunBullet extends Bullet {
     MachineGunBullet(TDS game, Vector2 playerPos) {
         super(game, playerPos);
         damage = 15;
-        size = 3;
+        size = 5;
     }
 
     @Override
