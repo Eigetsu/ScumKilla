@@ -12,26 +12,37 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * Created by Eigetsu on 1/17/18.
  * TODO: make a main Menu
  */
-public class MainMenu extends Game implements InputProcessor {
+public class MainMenu implements Screen, InputProcessor {
 
     OrthographicCamera camera;
     private BitmapFont font;
     private SpriteBatch batch;
     private float gameScreenX = 1280f;
     private float gameScreenY = 720f;
+    TDSLauncher game;
+    AssetManager assets;
 
-    @Override
-    public void create(){
+    public MainMenu(TDSLauncher game){
+        this.game = game;
+        assets = game.getAssets();
         camera = new OrthographicCamera(gameScreenX,gameScreenY);
         camera.setToOrtho(false, gameScreenX, gameScreenY);
         batch = new SpriteBatch();
         font = new BitmapFont();
+
+
     }
 
 
 
     @Override
-    public void render() {
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
@@ -39,13 +50,14 @@ public class MainMenu extends Game implements InputProcessor {
 
 
         batch.begin();
-        font.draw(batch, "SCUMKILLA!!!", gameScreenX/2, gameScreenY/2);
-        font.draw(batch, "Click anywhere to begin!", gameScreenX/2, gameScreenY/2-20);
+        batch.draw(assets.getTextureByName("MainMenuScreen"), 0, 0, gameScreenX, gameScreenY);
         batch.end();
 
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             System.out.println("click!");
-            //this.setScreen(new TDS());
+            //game.setScreen(new TDS(game));
+
+            game.setScreen(new TDS(game));
         }
 
     }
@@ -65,6 +77,10 @@ public class MainMenu extends Game implements InputProcessor {
 
     }
 
+    @Override
+    public void hide() {
+
+    }
 
 
     @Override

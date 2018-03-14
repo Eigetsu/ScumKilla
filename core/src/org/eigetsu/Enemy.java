@@ -51,7 +51,8 @@ class Enemy {
         rotation = ((float) Math.atan2(game.player1.getPos().y - pos.y, game.player1.getPos().x - pos.x) * 180.0f / (float) Math.PI);
 
         batch.draw(txtcharr, pos.x- ENEMY_WIDTH /2, pos.y- ENEMY_HEIGHT /2, ENEMY_WIDTH /2, ENEMY_HEIGHT /2, ENEMY_WIDTH, ENEMY_HEIGHT,1,1,rotation);
-        pos.add((float) Math.cos(Math.toRadians(rotation))*20f*dt*(1f+game.level*0.05f),(float) Math.sin(Math.toRadians(rotation))*20f*dt*(1f+game.level*0.05f));
+        pos.add((float) Math.cos(Math.toRadians(rotation))*20f*dt*(1f+game.level*0.05f),
+                (float) Math.sin(Math.toRadians(rotation))*20f*dt*(1f+game.level*0.05f));
 
     }
     public void recieveDamage(int damage){

@@ -1,9 +1,6 @@
 package org.eigetsu;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -20,7 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
  * Created by Eigetsu on 2017/10/16.
  */
 
-public class TDS extends ApplicationAdapter implements InputProcessor {
+public class TDS implements InputProcessor, Screen {
 	private OrthographicCamera cam;
 
 	private SpriteBatch batch;
@@ -55,6 +52,7 @@ public class TDS extends ApplicationAdapter implements InputProcessor {
 
 	Pixmap scrn;
 
+	TDSLauncher game;
 
 	private Bullet[] bulletPool =new Bullet[250];
 	Bullet[] bulletOnScene =new Bullet[250];
@@ -65,13 +63,30 @@ public class TDS extends ApplicationAdapter implements InputProcessor {
 
 	private BitmapFont font;
 
+	boolean isReleased = true;
+	boolean touch0 = false;
+	int startTouchX = 0;
+	int startTouchY = 0;
+
 	public int drawCountDebug;
 
-	@Override
-	public void create () {
+	Application.ApplicationType appType;
 
+	public TDS(TDSLauncher game) {
+		this.game = game;
+
+	}
+
+
+
+
+
+
+	public void create () {
+		assets = game.getAssets();
+		appType = Gdx.app.getType();
 		scrn = ScreenUtils.getFrameBufferPixmap(0, 0, (int)gameScreenX, (int)gameScreenY);
-		assets = new AssetManager();
+
 		batch = new SpriteBatch();
 
 		background = assets.getTextureByName("Background");
@@ -97,13 +112,16 @@ public class TDS extends ApplicationAdapter implements InputProcessor {
 
 		font = new BitmapFont();
 
+		Gdx.input.setInputProcessor(this);
+
 		scene = new Rectangle(0, 0, gameScreenX, gameScreenY);
 
 		for(Bullet bullet : bulletPool) bullet = new Bullet(this, parking);
 	}
 
 	@Override
-	public void render () {
+	public void render (float delta) {
+
 		dt = Gdx.graphics.getDeltaTime();
 		random = (float)Math.random();
 		mousepos.x=getMousePosInGameWorld().x;
@@ -111,42 +129,10 @@ public class TDS extends ApplicationAdapter implements InputProcessor {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
-// KEY PROCESSING
-		if(Gdx.input.isKeyPressed(Input.Keys.W)){
-			player1.setPos(player1.getPos().add(0,50f*dt));
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.S)){
-			player1.setPos(player1.getPos().add(0,-50f*dt));
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			player1.setPos(player1.getPos().add(-50f*dt,0));
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.D)){
-			player1.setPos(player1.getPos().add(50f*dt,0));
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-			timepassed += dt;
-			if (timepassed > 0.2f){
-
-				bullets.add(new Bullet(this,player1.pos));
-				timepassed = 0f;
-			}
-		}
-		if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
-			timepassed += dt;
-			if (timepassed > 0.03f){
-				bullets.add(new MachineGunBullet(this, player1.pos.cpy()));
-				timepassed = 0f;
-			}
-		}
-
-//SPAWN ENEMIES BY KEY
-		if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
-			spawnEnemies();
-		}
-
-
+//PROCESS CONTROLS
+		timepassed += dt;
+		if (appType == Application.ApplicationType.Android) proccessAndroidControls();
+		else processDesktopKeys();
 
 //CAMERA
 		batch.setProjectionMatrix(cam.combined);
@@ -231,15 +217,15 @@ public class TDS extends ApplicationAdapter implements InputProcessor {
 		}
 /* PLAYER CONDITIONS */
 		if (player1.getHealth() <= 0){
-			batch.draw(maketa, 0f, 0f,gameScreenX,gameScreenY);
+			//batch.draw(maketa, 0f, 0f,gameScreenX,gameScreenY);
+			assets.updateBackground();
 			enemies.clear();
 			bloodDecals.clear();
+			System.gc();
+			game.setScreen(new GameOverMenu(game));
 		}
 
-		//font.draw(batch, "..." + getMousePosInGameWorld().toString(), getMousePosInGameWorld().x, getMousePosInGameWorld().y);
-		//font.draw(batch, Integer.toString(Gdx.graphics.getFramesPerSecond()), 10, 710);
-		//font.draw(batch, "Enemies:" + enemies.size + "  Bullets:" + bullets.size + "  Blood:" + bloodDecals.size + "  JavaHeap:" + Gdx.app.getJavaHeap() + "  Heap:" + Gdx.app.getNativeHeap(), 40, 710);
-		//font.draw(batch, "Health:" + player1.getHealth() + "   Level:" + level, 200f, 710f);
+
 		batch.end();
 
 //LEVEL UP
@@ -259,6 +245,80 @@ public class TDS extends ApplicationAdapter implements InputProcessor {
 
 	}
 
+	@Override
+	public void resize(int width, int height) {
+
+	}
+
+	@Override
+	public void pause() {
+
+	}
+
+	@Override
+	public void resume() {
+
+	}
+
+	//DESKTOP CONTROL
+	private void processDesktopKeys(){
+
+		getMousePosInGameWorld();
+
+		if(Gdx.input.isKeyPressed(Input.Keys.W)){
+			player1.setPos(player1.getPos().add(0,50f*dt));
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.S)){
+			player1.setPos(player1.getPos().add(0,-50f*dt));
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.A)){
+			player1.setPos(player1.getPos().add(-50f*dt,0));
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.D)){
+			player1.setPos(player1.getPos().add(50f*dt,0));
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+			if (timepassed > 0.2f){
+
+				bullets.add(new Bullet(this,player1.pos.cpy()));
+				timepassed = 0f;
+			}
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.NUM_2) || Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
+
+			if (timepassed > 0.03f){
+				bullets.add(new MachineGunBullet(this, player1.pos.cpy()));
+				timepassed = 0f;
+			}
+		}
+
+		//SPAWN ENEMIES BY KEY
+		if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+			spawnEnemies();
+		}
+
+
+
+		/*if (Gdx.input.getDeltaX() > 0 && touch0) player1.setPos(player1.getPos().add(50f*dt,0));
+		if (Gdx.input.getDeltaX() < 0 && touch0) player1.setPos(player1.getPos().add(-50f*dt,0));
+		if (Gdx.input.getDeltaY() > 0 && touch0) player1.setPos(player1.getPos().add(0,50f*dt));
+		if (Gdx.input.getDeltaY() < 0 && touch0) player1.setPos(player1.getPos().add(0,-50f*dt));*/
+
+	}
+//ANDROID CONTROLL
+	private void proccessAndroidControls(){
+		touch0 = Gdx.input.isTouched(0);
+
+		mousepos3.x = Gdx.input.getX(1);
+		mousepos3.y = Gdx.input.getY(1);
+		cam.unproject(mousepos3);
+
+		if (Gdx.input.getGyroscopeX() > 0) player1.setPos(player1.getPos().add(50f*dt,0)); //R
+		if (Gdx.input.getGyroscopeX() < 0) player1.setPos(player1.getPos().add(-50f*dt,0));//L
+		if (Gdx.input.getGyroscopeY() > 0) player1.setPos(player1.getPos().add(0,50f*dt));//U
+		if (Gdx.input.getGyroscopeY() < 0) player1.setPos(player1.getPos().add(0,-50f*dt));//D
+
+	}
 
 	private void spawnEnemies(){
 		enemies.add(new Enemy(this, random*gameScreenX,random*-100f));//TOP
@@ -268,14 +328,32 @@ public class TDS extends ApplicationAdapter implements InputProcessor {
 		//Gdx.app.log("Enemies", "Enemies spawned");
 	}
 
-	Vector3 getMousePosInGameWorld() {
+	public Vector3 getMousePosInGameWorld() {
+
 		mousepos3.x = Gdx.input.getX();
 		mousepos3.y = Gdx.input.getY();
-		return cam.unproject(mousepos3);
+		cam.unproject(mousepos3);
+		return mousepos3;
 	}
+
 	public void enemyDeadEvent(){
 		enemieskilled++;
 	}
+
+
+	@Override
+	public void show() {
+		create();
+
+	}
+
+
+
+	@Override
+	public void hide() {
+
+	}
+
 	@Override
 	public void dispose () {
 		batch.dispose();

@@ -51,6 +51,7 @@ public class GameOverMenu implements Screen, InputProcessor {
 
 
         batch.begin();
+        batch.draw(assets.getTextureRegionByName("Backgroundr"),0, 0,gameScreenX,gameScreenY);
         batch.draw(maketa, 0f, 0f,gameScreenX,gameScreenY);
         batch.end();
 

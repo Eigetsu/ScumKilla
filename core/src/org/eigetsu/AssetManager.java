@@ -30,6 +30,7 @@ public class AssetManager implements Disposable{
     private Pixmap backgroundPixMap;
     private TextureRegion backgroundr;
     private Texture maketa;
+    private Texture mainscreen;
 
     public AssetManager(){
         Gdx.app.log("system","Textures Loading");
@@ -48,10 +49,8 @@ public class AssetManager implements Disposable{
         background = new Texture("bckg2.jpg");
         backgroundr = new TextureRegion(background);
 
-
-
-
-        maketa = new Texture("maketa.jpg");
+        maketa = new Texture("youlost.png");
+        mainscreen = new Texture("startscreen.jpg");
 
         Gdx.app.log("system","Textures Loaded");
 
@@ -66,6 +65,7 @@ public class AssetManager implements Disposable{
             case "BloodSplat2": return txtBloodSplat2;
             case "BloodSplat3": return txtBloodSplat3;
             case "Background": return background;
+            case "MainMenuScreen": return mainscreen;
             case "GameOverScreen": return maketa;
             case "Point": return txtpoint;
             default:return txtchar;
