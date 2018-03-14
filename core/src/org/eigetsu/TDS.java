@@ -166,7 +166,7 @@ public class TDS implements InputProcessor, Screen {
 			spawnEnemies();
 			}
 
-//DRAW BULLETS
+//DETECT BULLETS COLLISIONS
 		for (Bullet bullet : bullets){
 			for (Enemy enemy : enemies){
 				if (enemy.rec.contains(bullet.pos)){
@@ -208,13 +208,11 @@ public class TDS implements InputProcessor, Screen {
 		player1.update(dt,batch);
 
 
-
+//DRAW BULLETS
 		for (Bullet bullet : bullets){
 			bullet.update(dt,batch);
 		}
-		for (Enemy enemy : enemies){
 
-		}
 /* PLAYER CONDITIONS */
 		if (player1.getHealth() <= 0){
 			//batch.draw(maketa, 0f, 0f,gameScreenX,gameScreenY);

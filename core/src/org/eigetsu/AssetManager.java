@@ -19,7 +19,9 @@ public class AssetManager implements Disposable{
     private Texture txtBloodSplat2;
     private Texture txtBloodSplat3;
     private Texture txtchar;
+    private Texture txtenemy;
     private TextureRegion txtcharr;
+    private TextureRegion txtenemyr;
     private Texture txtbullet;
     private TextureRegion txtbulletr;
 
@@ -37,7 +39,9 @@ public class AssetManager implements Disposable{
         txtpoint = new Texture("point.png");
 
         txtchar = new Texture("char.png");
+        txtenemy = new Texture("enemy.png");
         txtcharr = new TextureRegion(txtchar);
+        txtenemyr = new TextureRegion(txtenemy);
 
         txtBloodSplat = new Texture("blood_splat.png");
         txtBloodSplat2 = new Texture("blood_splat2.png");
@@ -59,7 +63,7 @@ public class AssetManager implements Disposable{
     public Texture getTextureByName(String name){
         switch (name){
             case "Player": return txtchar;
-            case "Enemy":return txtchar;
+            case "Enemy":return txtenemy;
             case "DefBullet":return txtbullet;
             case "BloodSplat": return txtBloodSplat;
             case "BloodSplat2": return txtBloodSplat2;
@@ -75,7 +79,7 @@ public class AssetManager implements Disposable{
     public TextureRegion getTextureRegionByName(String name){
         switch (name){
             case "Player": return  txtcharr;
-            case "Enemy": return txtcharr;
+            case "Enemy": return txtenemyr;
             case "DefBullet": return txtbulletr;
             case "Backgroundr": return backgroundr;
             default: return  txtbulletr;
