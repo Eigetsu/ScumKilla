@@ -33,6 +33,8 @@ public class AssetManager implements Disposable{
     private TextureRegion backgroundr;
     private Texture maketa;
     private Texture mainscreen;
+    private Texture uiHealth;
+    private Texture uiHealthbar;
 
     public AssetManager(){
         Gdx.app.log("system","Textures Loading");
@@ -56,6 +58,9 @@ public class AssetManager implements Disposable{
         maketa = new Texture("youlost.png");
         mainscreen = new Texture("startscreen.jpg");
 
+        uiHealth = new Texture("UItxt_health.png");
+        uiHealthbar = new Texture("healthbar.png");
+
         Gdx.app.log("system","Textures Loaded");
 
     }
@@ -72,6 +77,8 @@ public class AssetManager implements Disposable{
             case "MainMenuScreen": return mainscreen;
             case "GameOverScreen": return maketa;
             case "Point": return txtpoint;
+            case "UIHealth": return uiHealth;
+            case "UIHealthBar": return uiHealthbar;
             default:return txtchar;
         }
 
@@ -92,6 +99,10 @@ public class AssetManager implements Disposable{
 
         Gdx.app.log("debug","Updating Background");
 
+    }
+
+    public void resetBackground(){
+        backgroundr = new TextureRegion(background);
     }
 
 

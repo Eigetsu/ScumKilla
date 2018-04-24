@@ -55,7 +55,7 @@ public class TDS implements InputProcessor, Screen {
 	TDSLauncher game;
 
 	private Bullet[] bulletPool =new Bullet[250];
-	Bullet[] bulletOnScene =new Bullet[250];
+
 
 	private Vector2 parking = new Vector2(-100, -100);
 	Vector2 mousepos = new Vector2();
@@ -76,11 +76,6 @@ public class TDS implements InputProcessor, Screen {
 		this.game = game;
 
 	}
-
-
-
-
-
 
 	public void create () {
 		assets = game.getAssets();
@@ -154,10 +149,7 @@ public class TDS implements InputProcessor, Screen {
 			bloodDecals.clear();
 
 		}
-		//Gdx.app.log("debug",Integer.toString(drawCountDebug));
-		//scrn = ScreenUtils.getFrameBufferPixmap(0, 0, (int)gameScreenX, (int)gameScreenY);
 
-		//block.update(dt,batch);
 
 
 //SPAWN ENEMIES
@@ -212,6 +204,10 @@ public class TDS implements InputProcessor, Screen {
 		for (Bullet bullet : bullets){
 			bullet.update(dt,batch);
 		}
+		batch.draw(assets.getTextureByName("UIHealth"),10, 680,100,40);
+		for (int n=0; n < player1.getHealth();n+=10) batch.draw(assets.getTextureByName("UIHealthBar"),120+n*1, 690,2,20);
+
+
 
 /* PLAYER CONDITIONS */
 		if (player1.getHealth() <= 0){
@@ -220,6 +216,7 @@ public class TDS implements InputProcessor, Screen {
 			enemies.clear();
 			bloodDecals.clear();
 			System.gc();
+			Gdx.input.setInputProcessor(null);
 			game.setScreen(new GameOverMenu(game));
 		}
 

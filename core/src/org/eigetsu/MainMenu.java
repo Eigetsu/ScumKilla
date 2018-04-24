@@ -29,6 +29,7 @@ public class MainMenu implements Screen, InputProcessor {
         camera.setToOrtho(false, gameScreenX, gameScreenY);
         batch = new SpriteBatch();
         font = new BitmapFont();
+        Gdx.input.setInputProcessor(null);
 
 
     }
@@ -37,6 +38,7 @@ public class MainMenu implements Screen, InputProcessor {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(this);
 
     }
 
@@ -54,9 +56,6 @@ public class MainMenu implements Screen, InputProcessor {
         batch.end();
 
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            System.out.println("click!");
-            //game.setScreen(new TDS(game));
-
             game.setScreen(new TDS(game));
         }
 

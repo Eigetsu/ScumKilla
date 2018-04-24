@@ -21,6 +21,7 @@ public class GameOverMenu implements Screen, InputProcessor {
     TDSLauncher game;
     public AssetManager assets;
     Texture maketa;
+    int wait=60;
 
     public GameOverMenu(TDSLauncher game){
         this.game = game;
@@ -38,6 +39,8 @@ public class GameOverMenu implements Screen, InputProcessor {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(null);
+        Gdx.input.setInputProcessor(this);
 
     }
 
@@ -55,11 +58,13 @@ public class GameOverMenu implements Screen, InputProcessor {
         batch.draw(maketa, 0f, 0f,gameScreenX,gameScreenY);
         batch.end();
 
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            System.out.println("click!");
-            game.setScreen(new MainMenu(game));
-
-            //this.setScreen(new TDS());
+        if (Gdx.input.isTouched(Input.Buttons.LEFT)) {
+            wait++;
+            if (wait > 60) {
+                wait =0;
+                game.assets.resetBackground();
+                game.setScreen(new MainMenu(game));
+            }
         }
 
     }
