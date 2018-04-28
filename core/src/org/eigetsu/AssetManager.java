@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.HashMap;
+
 /**
  * Created by Eigetsu on 2017/11/13.
  * TODO: Texture Atlas
@@ -35,6 +37,9 @@ public class AssetManager implements Disposable{
     private Texture mainscreen;
     private Texture uiHealth;
     private Texture uiHealthbar;
+    
+    private HashMap<String, Texture> textureHashMap;
+    private HashMap<String, TextureRegion> textureRegionHashMap;
 
     public AssetManager(){
         Gdx.app.log("system","Textures Loading");
@@ -61,36 +66,36 @@ public class AssetManager implements Disposable{
         uiHealth = new Texture("UItxt_health.png");
         uiHealthbar = new Texture("healthbar.png");
 
+        textureHashMap = new HashMap<String, Texture>();
+        textureHashMap.put("Player",txtchar);
+        textureHashMap.put("Enemy",txtenemy);
+        textureHashMap.put("DefBullet",txtbullet);
+        textureHashMap.put("BloodSplat",txtBloodSplat);
+        textureHashMap.put("BloodSplat2",txtBloodSplat2);
+        textureHashMap.put("BloodSplat3",txtBloodSplat3);
+        textureHashMap.put("Background",background);
+        textureHashMap.put("MainMenuScreen",mainscreen);
+        textureHashMap.put("GameOverScreen",maketa);
+        textureHashMap.put("Point",txtpoint);
+        textureHashMap.put("UIHealth",uiHealth);
+        textureHashMap.put("UIHealthBar",uiHealthbar);
+
+        textureRegionHashMap = new HashMap<String, TextureRegion>();
+        textureRegionHashMap.put("Player", txtcharr);
+        textureRegionHashMap.put("Enemy",txtenemyr);
+        textureRegionHashMap.put("DefBullet",txtbulletr);
+        textureRegionHashMap.put("Backgroundr",backgroundr);
+        
+
         Gdx.app.log("system","Textures Loaded");
 
     }
 
     public Texture getTextureByName(String name){
-        switch (name){
-            case "Player": return txtchar;
-            case "Enemy":return txtenemy;
-            case "DefBullet":return txtbullet;
-            case "BloodSplat": return txtBloodSplat;
-            case "BloodSplat2": return txtBloodSplat2;
-            case "BloodSplat3": return txtBloodSplat3;
-            case "Background": return background;
-            case "MainMenuScreen": return mainscreen;
-            case "GameOverScreen": return maketa;
-            case "Point": return txtpoint;
-            case "UIHealth": return uiHealth;
-            case "UIHealthBar": return uiHealthbar;
-            default:return txtchar;
-        }
-
+        return textureHashMap.get(name);
     }
     public TextureRegion getTextureRegionByName(String name){
-        switch (name){
-            case "Player": return  txtcharr;
-            case "Enemy": return txtenemyr;
-            case "DefBullet": return txtbulletr;
-            case "Backgroundr": return backgroundr;
-            default: return  txtbulletr;
-        }
+        return textureRegionHashMap.get(name);
     }
 
     public void updateBackground(){

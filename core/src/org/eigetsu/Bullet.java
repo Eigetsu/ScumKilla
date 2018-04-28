@@ -34,7 +34,7 @@ class Bullet {
         directionX = (float) Math.cos(Math.toRadians(rotation));
         directionY = (float) Math.sin(Math.toRadians(rotation));
         this.game = game;
-        txtbulletr = game.assets.getTextureRegionByName("Bullet");
+        txtbulletr = game.assets.getTextureRegionByName("DefBullet");
     }
 
     public void update(float dt, SpriteBatch batch){

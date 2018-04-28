@@ -144,11 +144,11 @@ public class TDS implements InputProcessor, Screen {
 		for(BloodSplat blood : bloodDecals){
 			blood.update(dt,batch);
 		}
-		if (bloodDecals.size > 20) {
+		/*if (bloodDecals.size > 20) {
 			assets.updateBackground();
 			bloodDecals.clear();
 
-		}
+		}*/
 
 
 
